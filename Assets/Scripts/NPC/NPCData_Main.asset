@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49e20ddad3c7e2e43b218e3dfb886f8b, type: 3}
+  m_Name: NPCData_Main
+  m_EditorClassIdentifier: Assembly-CSharp::NPCData
+  npcs:
+  - _id: 1
+    _npcName: Kotak R
+    _prefab: {fileID: 7168482899683956613, guid: 78e0515b247af2d40bbc82e5b1ddd424, type: 3}
+  - _id: 2
+    _npcName: Kotak G
+    _prefab: {fileID: 2741203248005583402, guid: 24470e70eda5ca54180b977034fcb238, type: 3}
+  - _id: 3
+    _npcName: Kotak B
+    _prefab: {fileID: 1661428577294669255, guid: de19446e3c678ac4680f183ebbad72e4, type: 3}
