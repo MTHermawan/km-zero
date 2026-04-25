@@ -1,31 +1,54 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SecurityCameraManager : MonoBehaviour
 {
     [SerializeField] private List<SecurityCamera> securityCameras = new();
-    private int _currentCameraIndex ;
-    public int currentCameraIndex
+    private int _currentCameraIndex;
+    public int CurrentCameraIndex
     {
         get => _currentCameraIndex;
-        set
+        private set
         {
             _currentCameraIndex = Mathf.Clamp(value, 0, securityCameras.Count - 1);
-            RefreshCameraState();
+            onCameraSwitched?.Invoke();
         }
     }
+    public Action onCameraSwitched;
 
-    private void RefreshCameraState()
+    public Camera CurrentActiveCamera => securityCameras[CurrentCameraIndex].CameraView != null ? securityCameras[CurrentCameraIndex].CameraView : null;
+
+    void Start()
     {
-        if (currentCameraIndex <= 0) return;
+        onCameraSwitched += ReloadCameraRender;
+    }
+
+    private void ReloadCameraRender()
+    {
+        if (CurrentCameraIndex < 0) return;
 
         for (int i = 0; i < securityCameras.Count; i++)
         {
-            securityCameras[i].gameObject.SetActive(i == currentCameraIndex);
+            if (CurrentCameraIndex == i) securityCameras[i].EnableCamera();
+            else securityCameras[i].DisableCamera();
         }
+        // CameraUI.ChangeCanvasCamera(CurrentActiveCamera);
     }
 
-    private void NextCamera() => currentCameraIndex = (currentCameraIndex + 1) % securityCameras.Count;
-    private void PrevCamera() => currentCameraIndex = (currentCameraIndex - 1) % securityCameras.Count;
+    public void ResetState()
+    {
+        CurrentCameraIndex = 0;
+    }
+
+    public void NextCamera()
+    {
+        Debug.Log("Next Camera");
+        CurrentCameraIndex = (CurrentCameraIndex + 1) % securityCameras.Count;
+    }
+    public void PrevCamera()
+    {
+        Debug.Log("Prev Camera");
+        CurrentCameraIndex = (securityCameras.Count + CurrentCameraIndex - 1) % securityCameras.Count;
+    }
 }

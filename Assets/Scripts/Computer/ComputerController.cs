@@ -1,59 +1,81 @@
-using System.Linq.Expressions;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ComputerController : MonoBehaviour
 {
+    private PlayerController PlayerController => PlayerController.Instance;
+    private PlayerUIController playerUI => PlayerUIController.Instance;
+
+    [Header("Player Config")]
     public Camera playerViewCamera;
-    public Transform cameraTexture;
-    public Transform desktopTexture;
     private bool _isUsingComputer = false;
-    
+
+    [Header("Camera")]
+    [SerializeField] private VirtualScreen cameraVirtualScreen;
+    [SerializeField] private SecurityCameraManager cameraManager;
+    [SerializeField] private SecurityCameraUIController cameraUI;
+
+    [Header("Desktop")]
+    public VirtualScreen desktopScreen;
 
     void Start()
     {
-        
-    }
-
-    void Update()
-    {
-        if (_isUsingComputer)
-        {
-            if (InputSystem.actions.FindAction("Quit").WasPressedThisFrame())
-            {
-                ExitComputer();
-            }
-        }
+        InitializeCameraScreen();
     }
 
     public void OpenComputer()
     {
         if (playerViewCamera == null) return;
 
-        AdvancedPlayerController.Instance.DisableCamera();
-        AdvancedPlayerController.Instance.DisableMovement();
-        playerViewCamera.gameObject.SetActive(true);
+        PlayerController.DisableCamera();
+        PlayerController.DisableMovement();
+
         _isUsingComputer = true;
+    
+        playerViewCamera.gameObject.SetActive(true);
+        cameraVirtualScreen.EnableHit();
+
+        PlayerController.Input.onExit += ExitComputer;
     }
 
     public void ExitComputer()
-    {   
+    {
         if (playerViewCamera == null) return;
 
-        AdvancedPlayerController.Instance.EnableCamera();
-        AdvancedPlayerController.Instance.EnableMovement();
+        PlayerController.EnableCamera();
+        PlayerController.EnableMovement();
         playerViewCamera.gameObject.SetActive(false);
         _isUsingComputer = false;
+
+        cameraVirtualScreen.DisableHit();
+        PlayerController.Input.onExit -= ExitComputer;
+    }
+
+    private void InitializeCameraScreen()
+    {
+        if (cameraManager == null || cameraUI == null) return;
+
+        cameraManager.onCameraSwitched += () =>
+        {
+            UpdateCameraScreen();
+        };
+
+        cameraVirtualScreen.screenCaster = cameraUI.gameObject.GetComponent<GraphicRaycaster>();
+        cameraUI.onPreviousCameraClick += cameraManager.PrevCamera;
+        cameraUI.onNextCameraClick += cameraManager.NextCamera;
+
+        cameraVirtualScreen.DisableHit();
+        cameraManager.ResetState();
+    }
+
+    private void UpdateCameraScreen()
+    {
+        cameraVirtualScreen.screenCamera = cameraManager.CurrentActiveCamera;
+        cameraUI.ChangeCanvasCamera(cameraManager.CurrentActiveCamera);
     }
 
     public void Interact()
     {
         OpenComputer();
-    }
-
-    public void OnQuit()
-    {
-        
     }
 }

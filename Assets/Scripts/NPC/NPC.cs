@@ -4,7 +4,7 @@ public class NPC : MonoBehaviour
 {
     [SerializeField] private float speed = 0.1f; 
     private Rigidbody rb;
-    private bool isStopping = false;
+    private bool isMoving = true;
 
     void Awake()
     {
@@ -18,25 +18,11 @@ public class NPC : MonoBehaviour
 
     public void Move()
     {
-        if (rb == null || isStopping) return;
+        if (rb == null || !isMoving) return;
 
         rb.Move(transform.position + transform.right * (speed / 5), Quaternion.identity);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("StopTrigger"))
-        {
-            Debug.Log("Stop");
-            isStopping = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("StopTrigger"))
-        {
-            isStopping = false;
-        }
-    }
+    public void EnableMove() => isMoving = true;
+    public void DisableMove() => isMoving = false;
 }

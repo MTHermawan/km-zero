@@ -11,6 +11,7 @@ public class Interactor : MonoBehaviour
     public Transform interactorSource;
     public float interactRange;
     private IInteractable currentInteractable;
+    [SerializeField] private LayerMask hitLayers;
     private GameObject lastHitObj;
 
     void Awake()
@@ -27,7 +28,7 @@ public class Interactor : MonoBehaviour
     {
         Ray r = new(interactorSource.position, interactorSource.forward);
 
-        if (Physics.Raycast(r, out RaycastHit hitInfo, interactRange))
+        if (Physics.Raycast(r, out RaycastHit hitInfo, interactRange, hitLayers))
         {
             if (hitInfo.collider.gameObject != lastHitObj || currentInteractable == null)
             {

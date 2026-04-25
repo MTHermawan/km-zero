@@ -52,6 +52,10 @@ TemporaryDependencyNodeTargetIdentifier=netstandard2.1
 [sourceFiles]
 Assets/Scripts/
  Computer/ComputerController.cs
+ Debug/
+  ButtonAttributeDrawer.cs
+  EditorButton.cs
+  Lobotomization.cs
  Door.cs
  GameManager.cs
  Interaction/
@@ -62,11 +66,18 @@ Assets/Scripts/
   NPC.cs
   NPCData.cs
   NPCSpawnManager.cs
- Player/AdvancedPlayerController.cs
+ Player/
+  PlayerController.cs
+  PlayerInputController.cs
  PortalBarrier.cs
  SecurityCamera/
   SecurityCamera.cs
   SecurityCameraManager.cs
+ Trigger/StopTrigger.cs
+ UI/
+  PlayerUIController.cs
+  SecurityCameraUIController.cs
+  VirtualScreen.cs
  Window.cs
 Assets/TutorialInfo/Readme.cs
 Temp/obj/Assembly-CSharp/.NETStandard,Version=v2.1.AssemblyAttributes.cs
@@ -420,7 +431,7 @@ Temp/bin/Debug/
  Unity.VisualStudio.Editor.dll
 
 [analyzerReferences]
-C:/Users/Acer/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.2.1/Analyzers/Microsoft.Unity.Analyzers.dll
+C:/Users/Acer/.vscode/extensions/visualstudiotoolsforunity.vstuc-1.2.2/Analyzers/Microsoft.Unity.Analyzers.dll
 D:/Unity/Editor/6000.3.6f1/Editor/Data/Tools/BuildPipeline/Unity.SourceGenerators/
  Unity.Properties.SourceGenerator.dll
  Unity.SourceGenerators.dll

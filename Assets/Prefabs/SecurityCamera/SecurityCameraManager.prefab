@@ -1,0 +1,300 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &616534730027878205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5523410066388249280}
+  - component: {fileID: 1256449737341000286}
+  m_Layer: 0
+  m_Name: SecurityCameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5523410066388249280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616534730027878205}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.49332, y: 4.7263026, z: -3.393676}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8992719901359938367}
+  - {fileID: 113070395281284827}
+  - {fileID: 2869397376200454475}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1256449737341000286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616534730027878205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bda4f6ac429c34a9aa928943e500cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SecurityCameraManager
+  securityCameras:
+  - {fileID: 5991471516082070952}
+  - {fileID: 3348637909037015116}
+  - {fileID: 593157071236091868}
+--- !u!1001 &3364371629059337589
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5523410066388249280}
+    m_Modifications:
+    - target: {fileID: 1470005490063600538, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_CameraType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_Name
+      value: SecurityCamera_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676536490495357564, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8659852
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.19198428
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.45080337
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.09994069
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+--- !u!114 &5991471516082070952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9049242047093573853, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 3364371629059337589}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013f620c45f3d2b4eb419ac8fd26226b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SecurityCameraController
+--- !u!4 &8992719901359938367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 3364371629059337589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6047663450866608273
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5523410066388249280}
+    m_Modifications:
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_Name
+      value: SecurityCamera_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676536490495357564, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.93136597
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.20647883
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.29276526
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.06490449
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 34.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+--- !u!4 &113070395281284827 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 6047663450866608273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3348637909037015116 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9049242047093573853, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 6047663450866608273}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013f620c45f3d2b4eb419ac8fd26226b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SecurityCameraController
+--- !u!1001 &8479728912824485633
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5523410066388249280}
+    m_Modifications:
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_Name
+      value: SecurityCamera_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607746087077286786, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2676536490495357564, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 16.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.21961921
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0486884
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.95127356
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.21089225
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+--- !u!114 &593157071236091868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9049242047093573853, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 8479728912824485633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013f620c45f3d2b4eb419ac8fd26226b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SecurityCameraController
+--- !u!4 &2869397376200454475 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5943670899581318730, guid: 0c538379e77d96a4b9b3b52492cdbcd2, type: 3}
+  m_PrefabInstance: {fileID: 8479728912824485633}
+  m_PrefabAsset: {fileID: 0}

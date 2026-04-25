@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class SecurityCamera : MonoBehaviour
 {
-    [SerializeField] private Transform _cameraView;
+    [SerializeField] private Camera _cameraView;
+    public Camera CameraView
+    {
+        get => _cameraView;
+        set => _cameraView = value;
+    }
     // [SerializeField] private bool activeCamera = true;
-    
+
     void Awake()
     {
-        _cameraView ??= GetComponentInChildren<Camera>().transform;
+        _cameraView ??= GetComponentInChildren<Camera>();
     }
 
-    void EnableCamera() => _cameraView.gameObject.SetActive(true);
-    void DisableCamera() => _cameraView.gameObject.SetActive(false);
+    public void EnableCamera() => _cameraView.gameObject.SetActive(true);
+    public void DisableCamera() => _cameraView.gameObject.SetActive(false);
 
     // public bool IsActiveCamera() => activeCamera;
 }

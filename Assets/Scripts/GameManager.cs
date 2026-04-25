@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
         {
             if (_player == null)
             {
-                _player = FindFirstObjectByType<AdvancedPlayerController>().transform;
+                _player = FindFirstObjectByType<PlayerController>().transform;
             }
             return _player;
         }

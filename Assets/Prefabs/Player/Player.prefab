@@ -261,7 +261,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6087896769248556375}
   - component: {fileID: 1301554844017296170}
-  - component: {fileID: 2735169377227701162}
+  - component: {fileID: 478781550471749458}
+  - component: {fileID: 7377324486162827793}
   - component: {fileID: 1981668974373629062}
   - component: {fileID: 3126961437492120987}
   m_Layer: 0
@@ -313,7 +314,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2735169377227701162
+--- !u!114 &478781550471749458
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,17 +323,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 4390109238184418440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883a08eeb93200e4bab832542dbaec0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 36a3ad930ffe3d848a845d0fc6d87e2d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AdvancedPlayerController
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputController
+--- !u!114 &7377324486162827793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4390109238184418440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f193eb41bca29c14c959b03280bf28e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   walkSpeed: 3
-  runSpeed: 5
-  crouchSpeed: 2.5
-  jumpForce: 1.5
+  runSpeed: 5.5
+  crouchSpeed: 2
+  jumpForce: 1.2
   gravity: -19.62
-  mouseSensitivity: 0.1
-  cameraTransform: {fileID: 0}
-  bodyTransform: {fileID: 3056967522012289679}
+  mouseSensitivity: 0.15
+  bodyTransform: {fileID: 0}
 --- !u!114 &1981668974373629062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,3 +389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactor
   interactorSource: {fileID: 534183527728371296}
   interactRange: 3
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 64

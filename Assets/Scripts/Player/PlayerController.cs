@@ -1,12 +1,13 @@
-
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class AdvancedPlayerController : MonoBehaviour
+[RequireComponent(typeof(PlayerInputController))]
+public class PlayerController : MonoBehaviour
 {
+    private PlayerUIController PlayerUI => PlayerUIController.Instance;
+    public PlayerInputController Input { get; private set; }
+
     [Header("Movement Settings")]
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
@@ -14,14 +15,22 @@ public class AdvancedPlayerController : MonoBehaviour
     public float jumpForce = 5f;
     public float gravity = -19.62f;
     private bool _canMove = true;
-    public bool canMove {
-        get => _canMove; 
+    public bool canMove
+    {
+        get => _canMove;
         private set
         {
             if (_canMove != value)
             {
                 _canMove = value;
-                Cursor.lockState = _canMove ? CursorLockMode.Locked : CursorLockMode.None;
+                if (_canMove)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
             }
         }
     }
@@ -34,8 +43,6 @@ public class AdvancedPlayerController : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     private float xRotation = 0f;
-    private Vector2 moveInput;
-    private Vector2 lookInput;
 
     // BOOLEAN HOLD STATE
     private bool isSprintHeld;
@@ -44,12 +51,13 @@ public class AdvancedPlayerController : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        Input = GetComponent<PlayerInputController>();
         cameraTransform = Camera.main.transform;
     }
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        InitMovement();
     }
 
     void Update()
@@ -78,8 +86,8 @@ public class AdvancedPlayerController : MonoBehaviour
             }
 
             // 3. MOVE
-            Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
-            controller.Move(move * currentSpeed * Time.deltaTime);
+            Vector3 move = transform.right * Input.MoveInputVector.x + transform.forward * Input.MoveInputVector.y;
+            controller.Move(currentSpeed * Time.deltaTime * move);
         }
 
         // 4. GRAVITY
@@ -87,54 +95,55 @@ public class AdvancedPlayerController : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    public void OnMove(InputValue value)
+    public void InitMovement()
     {
-        moveInput = value.Get<Vector2>();
+        Cursor.lockState = CursorLockMode.Locked;
+
+        Input.onLook += Look;
+        Input.onJump += Jump;
     }
 
-    public void OnLook(InputValue value)
+    public void Look()
     {
-        lookInput = value.Get<Vector2>();
+        if (!canMove) return;
 
-        float mouseX = lookInput.x * mouseSensitivity;
-        float mouseY = lookInput.y * mouseSensitivity;
+        float mouseX = Input.LookInputVector.x * mouseSensitivity;
+        float mouseY = Input.LookInputVector.y * mouseSensitivity;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
 
-    public void OnJump(InputValue value)
+    public void Jump()
     {
-        if (value.isPressed && isGrounded && !isCrouchHeld)
-        {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-        }
+        if (!canMove || !isGrounded || isCrouchHeld) return;
+
+        velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
     }
 
-    public void OnInteract(InputValue value)
+    public void EnableCamera()
     {
-        // Debug.Log("Trying to interact.");
-        if (TryGetComponent(out Interactor interactable))
-        {
-            interactable.PerformInteract();
-        }
+        PlayerUI.EnableCrosshair();
+        cameraTransform.gameObject.SetActive(true);
     }
-
-    public void EnableCamera() => cameraTransform.gameObject.SetActive(true);
-    public void DisableCamera() => cameraTransform.gameObject.SetActive(false);
+    public void DisableCamera()
+    {
+        PlayerUI.DisableCrosshair();
+        cameraTransform.gameObject.SetActive(false);
+    }
 
     public void EnableMovement() => canMove = true;
     public void DisableMovement() => canMove = false;
 
-    private static AdvancedPlayerController s_instance;
-    public static AdvancedPlayerController Instance
+    private static PlayerController s_instance;
+    public static PlayerController Instance
     {
         get
         {
             if (s_instance == null)
             {
-                s_instance = FindFirstObjectByType<AdvancedPlayerController>();
+                s_instance = FindFirstObjectByType<PlayerController>();
             }
             return s_instance;
         }

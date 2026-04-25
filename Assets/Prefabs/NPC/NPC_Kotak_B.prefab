@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3782373460670610978}
   m_Layer: 0
   m_Name: NPC_Kotak_B
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
