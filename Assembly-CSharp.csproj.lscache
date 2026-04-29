@@ -57,8 +57,11 @@ Assets/Scripts/
   EditorButton.cs
   Lobotomization.cs
  Door.cs
- GameManager.cs
+ GameManager/
+  DialogueManager.cs
+  GameManager.cs
  Interaction/
+  InspectController.cs
   Interactor.cs
   InteractTrigger.cs
   ToggleInteract.cs

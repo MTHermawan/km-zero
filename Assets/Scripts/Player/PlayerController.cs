@@ -14,35 +14,42 @@ public class PlayerController : MonoBehaviour
     public float crouchSpeed = 2.5f;
     public float jumpForce = 5f;
     public float gravity = -19.62f;
-    private bool _canMove = true;
-    public bool canMove
+    private int _disableMoveCount = 0;
+    public int DisableMoveCount
     {
-        get => _canMove;
+        get => _disableMoveCount;
         private set
         {
-            if (_canMove != value)
-            {
-                _canMove = value;
-                if (_canMove)
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-                else
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                }
-            }
+            _disableMoveCount = Mathf.Clamp(value, 0, value);
         }
     }
+    private bool CanMove => DisableMoveCount <= 0;
 
     [Header("Mouse Look")]
     public float mouseSensitivity = 0.5f;
-    private Transform cameraTransform;
+    public Transform CameraTransform { get; private set; }
     public Transform bodyTransform;
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
     private float xRotation = 0f;
+    private int _unlockCursorCount = 0;
+    public int UnlockCursorCount
+    {
+        get => _unlockCursorCount;
+        private set
+        {
+            _unlockCursorCount = Mathf.Clamp(value, 0, value);
+            if (UnlockCursorCount > 0)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+    }
 
     // BOOLEAN HOLD STATE
     private bool isSprintHeld;
@@ -52,7 +59,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Input = GetComponent<PlayerInputController>();
-        cameraTransform = Camera.main.transform;
+        CameraTransform = Camera.main.transform;
     }
 
     void Start()
@@ -62,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (canMove)
+        if (CanMove)
         {
             isSprintHeld = InputSystem.actions.FindAction("Sprint").IsPressed();
             isCrouchHeld = InputSystem.actions.FindAction("Crouch").IsPressed();
@@ -105,36 +112,38 @@ public class PlayerController : MonoBehaviour
 
     public void Look()
     {
-        if (!canMove) return;
+        if (!CanMove) return;
 
         float mouseX = Input.LookInputVector.x * mouseSensitivity;
         float mouseY = Input.LookInputVector.y * mouseSensitivity;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
 
     public void Jump()
     {
-        if (!canMove || !isGrounded || isCrouchHeld) return;
+        if (!CanMove || !isGrounded || isCrouchHeld) return;
 
         velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
     }
 
     public void EnableCamera()
     {
-        PlayerUI.EnableCrosshair();
-        cameraTransform.gameObject.SetActive(true);
+        // PlayerUI.EnableCrosshair();
+        CameraTransform.gameObject.SetActive(true);
     }
     public void DisableCamera()
     {
-        PlayerUI.DisableCrosshair();
-        cameraTransform.gameObject.SetActive(false);
+        // PlayerUI.DisableCrosshair();
+        CameraTransform.gameObject.SetActive(false);
     }
 
-    public void EnableMovement() => canMove = true;
-    public void DisableMovement() => canMove = false;
+    public void EnableMovement() => DisableMoveCount--;
+    public void DisableMovement() => DisableMoveCount++;
+    public void LockCursor() => UnlockCursorCount--;
+    public void UnlockCursor() => UnlockCursorCount++;
 
     private static PlayerController s_instance;
     public static PlayerController Instance

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,7 +16,6 @@ public class GameManager : MonoBehaviour
             return _player;
         }
     }
-    public ComputerController computerController;
 
     void Awake()
     {
@@ -32,13 +32,25 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public int GetMaskLayers(int layerMask)
+    {
+        for (int i = 0; i < 32; i++)
+        {
+            int value = 1 << i;
+
+            if ((layerMask & value) == value)
+                return i;
+        }
+        return 0;
     }
 
     private static GameManager s_instance;

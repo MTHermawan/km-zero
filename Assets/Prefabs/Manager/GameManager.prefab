@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c1d5e8d3a36364492a989f6be3300d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  computerController: {fileID: 0}
 --- !u!114 &255540437933117977
 MonoBehaviour:
   m_ObjectHideFlags: 0

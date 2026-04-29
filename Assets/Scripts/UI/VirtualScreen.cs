@@ -37,6 +37,14 @@ public class VirtualScreen : GraphicRaycaster
         }
     }
 
-    public void EnableHit() => col.enabled = true;
-    public void DisableHit() => col.enabled = false;
+    public void EnableHit() 
+    {
+        if (col == null) return;
+        col.enabled = true;
+    }
+    public void DisableHit()
+    {
+        if (col == null) return;   
+        col.enabled = false;
+    }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +7,11 @@ public class SecurityCameraUIController : MonoBehaviour
     [SerializeField] private Canvas _securityCameraCanvas;
     [SerializeField] private Button _previousCameraButton;
     [SerializeField] private Button _nextCameraButton;
+    [SerializeField] private Button _exitCameraButton;
 
     public Action onPreviousCameraClick;
     public Action onNextCameraClick;
+    public Action onExitCameraClick;
 
     void Awake()
     {
@@ -26,6 +27,7 @@ public class SecurityCameraUIController : MonoBehaviour
     {
         _previousCameraButton?.onClick.AddListener(() => { onPreviousCameraClick.Invoke(); });
         _nextCameraButton?.onClick.AddListener(() => { onNextCameraClick.Invoke(); });
+        _exitCameraButton?.onClick.AddListener(() => { onExitCameraClick.Invoke(); });
 
     //     if (SecurityCameraManager == null) return;
 

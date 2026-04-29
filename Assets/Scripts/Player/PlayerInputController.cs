@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,9 +6,12 @@ public class PlayerInputController : MonoBehaviour
 {
     public Vector2 MoveInputVector { get; private set; }
     public Vector2 LookInputVector { get; private set; }
+    public Vector2 ZoomInputVector { get; private set; }
     public Action onLook;
     public Action onJump;
     public Action onExit;
+    public Action onZoom;
+    public Action onRotate;
     
     private void OnMove(InputValue inputValue)
     {
@@ -22,7 +24,7 @@ public class PlayerInputController : MonoBehaviour
         onLook?.Invoke();
     }
 
-    public void OnJump(InputValue value)
+    public void OnJump()
     {
         onJump?.Invoke();
     }
@@ -38,5 +40,16 @@ public class PlayerInputController : MonoBehaviour
     public void OnExit()
     {
         onExit?.Invoke();
+    }
+
+    public void OnZoom(InputValue value)
+    {
+        ZoomInputVector = value.Get<Vector2>();
+        onZoom?.Invoke();
+    }
+
+    public void OnRotate()
+    {
+        onRotate?.Invoke();
     }
 }

@@ -1,54 +1,106 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ComputerController : MonoBehaviour
 {
+    [Serializable]
+    private class ComputerApps
+    {
+        public string name;
+        public VirtualScreen virtualScreen;
+        public GraphicRaycaster raycaster;
+        public Button desktopExecuteable;
+    }
+
     private PlayerController PlayerController => PlayerController.Instance;
     private PlayerUIController playerUI => PlayerUIController.Instance;
 
-    [Header("Player Config")]
+
+    [Header("General")]
     public Camera playerViewCamera;
     private bool _isUsingComputer = false;
+    public bool isUsingComputer
+    {
+        get => _isUsingComputer;
+        private set
+        {
+            if (_isUsingComputer != value)
+            {
+                _isUsingComputer = value;
+                if (_isUsingComputer)
+                {
+                    playerUI.DisableCrosshair();
+                }
+                else
+                {
+                    playerUI.EnableCrosshair();
+                }
+            }
+        }
+    }
+
+    [SerializeField] private List<ComputerApps> apps;
 
     [Header("Camera")]
-    [SerializeField] private VirtualScreen cameraVirtualScreen;
     [SerializeField] private SecurityCameraManager cameraManager;
     [SerializeField] private SecurityCameraUIController cameraUI;
 
     [Header("Desktop")]
     public VirtualScreen desktopScreen;
+    public GraphicRaycaster desktopRaycaster;
 
     void Start()
     {
-        InitializeCameraScreen();
+        InitializeComputer();
     }
 
-    public void OpenComputer()
+    private void OpenComputer()
     {
-        if (playerViewCamera == null) return;
+        if (playerViewCamera == null && _isUsingComputer) return;
+
+        _isUsingComputer = true;
 
         PlayerController.DisableCamera();
         PlayerController.DisableMovement();
+        PlayerController.UnlockCursor();
+        playerUI.DisableCrosshair();
 
-        _isUsingComputer = true;
-    
         playerViewCamera.gameObject.SetActive(true);
-        cameraVirtualScreen.EnableHit();
 
         PlayerController.Input.onExit += ExitComputer;
     }
 
-    public void ExitComputer()
+    private void ExitComputer()
     {
-        if (playerViewCamera == null) return;
+        if (playerViewCamera == null && !_isUsingComputer) return;
+
+        _isUsingComputer = false;
 
         PlayerController.EnableCamera();
         PlayerController.EnableMovement();
         playerViewCamera.gameObject.SetActive(false);
-        _isUsingComputer = false;
+        PlayerController.LockCursor();
+        playerUI.EnableCrosshair();
 
-        cameraVirtualScreen.DisableHit();
+        // cameraVirtualScreen.DisableHit();
         PlayerController.Input.onExit -= ExitComputer;
+    }
+
+    private void InitializeComputer()
+    {
+        desktopScreen.screenCaster = desktopRaycaster;
+
+        foreach (ComputerApps app in apps)
+        {
+            app.virtualScreen.screenCaster = app.raycaster;
+            app.desktopExecuteable.onClick.AddListener(() => { OpenApp(app.name); });
+        }
+        CloseAllApps();
+
+        InitializeCameraScreen();
     }
 
     private void InitializeCameraScreen()
@@ -60,22 +112,50 @@ public class ComputerController : MonoBehaviour
             UpdateCameraScreen();
         };
 
-        cameraVirtualScreen.screenCaster = cameraUI.gameObject.GetComponent<GraphicRaycaster>();
         cameraUI.onPreviousCameraClick += cameraManager.PrevCamera;
         cameraUI.onNextCameraClick += cameraManager.NextCamera;
+        cameraUI.onExitCameraClick += CloseAllApps;
 
-        cameraVirtualScreen.DisableHit();
         cameraManager.ResetState();
     }
 
     private void UpdateCameraScreen()
     {
-        cameraVirtualScreen.screenCamera = cameraManager.CurrentActiveCamera;
+        apps.Where(x => x.name == "Camera").ToList()[0].virtualScreen.screenCamera = cameraManager.CurrentActiveCamera;
         cameraUI.ChangeCanvasCamera(cameraManager.CurrentActiveCamera);
     }
 
     public void Interact()
     {
         OpenComputer();
+    }
+
+    public void OpenApp(string name)
+    {
+        foreach (ComputerApps app in apps)
+        {
+            if (app.name == name)
+            {
+                app.virtualScreen.gameObject.SetActive(true);
+                app.virtualScreen.EnableHit();
+            }
+            else
+            {
+                app.virtualScreen.gameObject.SetActive(false);
+                app.virtualScreen.DisableHit();
+            }
+        }
+    }
+
+    public void CloseAllApps()
+    {
+        foreach (ComputerApps app in apps)
+        {
+            app.virtualScreen.gameObject.SetActive(false);
+            app.virtualScreen.DisableHit();
+        }
+
+        desktopScreen.gameObject.SetActive(true);
+        desktopScreen.EnableHit();
     }
 }

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
- 
+    private PlayerController _player => PlayerController.Instance;
+    
     public Transform pivot;
     public float speed = 3f;
     private float targetYRotation;
@@ -12,7 +13,6 @@ public class Door : MonoBehaviour
     private bool isOpen;
  
     void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         defaultYRotation = transform.eulerAngles.y;
     }
  

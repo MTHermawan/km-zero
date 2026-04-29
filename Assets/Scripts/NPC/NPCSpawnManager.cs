@@ -25,7 +25,7 @@ public class NPCSpawnManager : MonoBehaviour
         
     }
 
-    void Spawn()
+    public void Spawn()
     {
         if (spawnPoint == null) return;
 

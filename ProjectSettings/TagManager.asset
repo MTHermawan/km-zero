@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SecurityCamera
   - Car
+  - canPickUp
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Interactable
-  - 
+  - HoldLayer
   - 
   - 
   - 
@@ -42,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: HoldLayer
+    uniqueID: 4023567203
     locked: 0
   m_RenderingLayers:
   - Default
