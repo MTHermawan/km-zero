@@ -1,2 +1,19 @@
 fileFormatVersion: 2
 guid: 8fe5f95e2da43ba42ae328d07a76e4f3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - blackscreen: {instanceID: 0}
+  - crosshairPanel: {instanceID: 0}
+  - inspectCanvas: {instanceID: 0}
+  - inspectBackground: {instanceID: 0}
+  - textBoxContainer: {instanceID: 0}
+  - textBoxContent: {instanceID: 0}
+  - actionKeyGroup: {instanceID: 0}
+  - actionKeyPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

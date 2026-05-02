@@ -33,32 +33,36 @@ public class InspectController : MonoBehaviour
         get => _heldObj;
         set
         {
-            _heldObj = value;
-
-            _isRotating = false;
-            if (_heldObj == null)
+            if (HeldObj != value)
             {
-                _player.Input.onLook -= RotateObject;
-                _player.Input.onZoom -= ZoomObject;
-                _player.Input.onRotate -= ToggleRotation;
-                _player.EnableMovement();
-                _playerUI.EnableCrosshair();
-                _playerUI.DisableInspectUI();
+                string varId = nameof(HeldObj) + GetInstanceID();
 
-                if (!isRotating)
+                _heldObj = value;
+                _isRotating = false;
+                if (_heldObj == null)
                 {
-                    _player.LockCursor();
+                    _player.Input.onLook -= RotateObject;
+                    _player.Input.onZoom -= ZoomObject;
+                    _player.Input.onRotate -= ToggleRotation;
+                    _player.EnableMovement(varId);
+                    _playerUI.EnableCrosshair(varId);
+                    _playerUI.DisableInspectUI();
+
+                    if (!isRotating)
+                    {
+                        _player.LockCursor();
+                    }
                 }
-            }
-            else
-            {
-                _player.Input.onRotate += ToggleRotation;
-                _player.Input.onZoom += ZoomObject;
-                _player.DisableMovement();
-                _playerUI.DisableCrosshair();
-                _playerUI.EnableInspectUI();
-                
-                ToggleRotation(_isRotating);
+                else
+                {
+                    _player.Input.onRotate += ToggleRotation;
+                    _player.Input.onZoom += ZoomObject;
+                    _player.DisableMovement(varId);
+                    _playerUI.DisableCrosshair(varId);
+                    _playerUI.EnableInspectUI();
+
+                    ToggleRotation(_isRotating);
+                }
             }
         }
     } //object which we pick up
@@ -87,7 +91,6 @@ public class InspectController : MonoBehaviour
     void Awake()
     {
         _player = GetComponent<PlayerController>();
-        currentZoom = pickUpRange;
         _playerUI?.SetInspectCamera(inspectCamera);
     }
 
@@ -137,6 +140,8 @@ public class InspectController : MonoBehaviour
             HeldObj.layer = GameManager.GetMaskLayers(HoldLayer.value); //change the object layer to the holdLayer
             HeldObj.transform.eulerAngles = holdPos.eulerAngles;
             HeldObj.transform.RotateAround(holdPos.position, -holdPos.up, 180);
+            currentZoom = pickUpRange;
+            holdPos.transform.localPosition = Vector3.forward * currentZoom;
 
             //make sure object doesnt collide with player, it can cause weird bugs
             Physics.IgnoreCollision(HeldObj.GetComponent<Collider>(), _player.GetComponent<Collider>(), true);
@@ -156,7 +161,6 @@ public class InspectController : MonoBehaviour
 
         //re-enable collision with player
         Physics.IgnoreCollision(HeldObj.GetComponent<Collider>(), _player.GetComponent<Collider>(), false);
-        _player.EnableMovement();
 
         HeldObj = null; //undefine game object
     }

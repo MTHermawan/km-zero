@@ -6,9 +6,31 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(MeshCollider))]
 public class VirtualScreen : GraphicRaycaster
 {
-    public Camera screenCamera; // Reference to the camera responsible for rendering the virtual screen's rendertexture
+    [SerializeField] private Camera _screenCamera; // Reference to the camera responsible for rendering the virtual screen's rendertexture
+    public Camera ScreenCamera
+    {
+        get => _screenCamera;
+        private set
+        {
+            if (_screenCamera != value)
+            {
+                _screenCamera = value;
+            }
+        }
+    }
 
-    public GraphicRaycaster screenCaster; // Reference to the GraphicRaycaster of the canvas displayed on the virtual screen
+    [SerializeField] private GraphicRaycaster _screenCaster; // Reference to the GraphicRaycaster of the canvas displayed on the virtual screen
+    public GraphicRaycaster ScreenCaster
+    {
+        get => _screenCaster;
+        private set
+        {
+            if (_screenCaster != value)
+            {
+                _screenCaster = value;
+            }
+        }
+    }
     private MeshCollider col;
 
     protected override void Awake()
@@ -27,24 +49,35 @@ public class VirtualScreen : GraphicRaycaster
             {
                 // Figure out where the pointer would be in the second camera based on texture position or RenderTexture.
                 Vector3 virtualPos = new Vector3(hit.textureCoord.x, hit.textureCoord.y);
-                virtualPos.x *= screenCamera.targetTexture.width;
-                virtualPos.y *= screenCamera.targetTexture.height;
+                virtualPos.x *= ScreenCamera.targetTexture.width;
+                virtualPos.y *= ScreenCamera.targetTexture.height;
 
                 eventData.position = virtualPos;
 
-                screenCaster.Raycast(eventData, resultAppendList);
+                ScreenCaster.Raycast(eventData, resultAppendList);
             }
         }
     }
 
-    public void EnableHit() 
+    public void EnableHit()
     {
         if (col == null) return;
         col.enabled = true;
     }
+    
     public void DisableHit()
     {
-        if (col == null) return;   
+        if (col == null) return;
         col.enabled = false;
+    }
+
+    public void SetScreenCamera(Camera newScreenCamera)
+    {
+        ScreenCamera = newScreenCamera;
+    }
+
+    public void SetScreenCaster(GraphicRaycaster newScreenCaster)
+    {
+        ScreenCaster = newScreenCaster;
     }
 }

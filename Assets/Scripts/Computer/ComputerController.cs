@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ComputerController : MonoBehaviour
+public class ComputerController : Interactable
 {
     [Serializable]
     private class ComputerApps
@@ -22,21 +23,32 @@ public class ComputerController : MonoBehaviour
     [Header("General")]
     public Camera playerViewCamera;
     private bool _isUsingComputer = false;
-    public bool isUsingComputer
+    public bool IsUsingComputer
     {
         get => _isUsingComputer;
         private set
         {
             if (_isUsingComputer != value)
             {
+                string varId = nameof(IsUsingComputer) + GetInstanceID();
+                
                 _isUsingComputer = value;
-                if (_isUsingComputer)
+                Debug.Log(_isUsingComputer);
+                if (!_isUsingComputer)
                 {
-                    playerUI.DisableCrosshair();
+                    PlayerController.EnableCamera();
+                    PlayerController.EnableMovement(varId);
+                    playerViewCamera.gameObject.SetActive(false);
+                    PlayerController.LockCursor();
+                    playerUI.EnableCrosshair(varId);
                 }
                 else
                 {
-                    playerUI.EnableCrosshair();
+                    PlayerController.DisableCamera();
+                    PlayerController.DisableMovement(varId);
+                    playerViewCamera.gameObject.SetActive(true);
+                    PlayerController.UnlockCursor();
+                    playerUI.DisableCrosshair(varId);
                 }
             }
         }
@@ -52,50 +64,35 @@ public class ComputerController : MonoBehaviour
     public VirtualScreen desktopScreen;
     public GraphicRaycaster desktopRaycaster;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         InitializeComputer();
     }
 
     private void OpenComputer()
     {
-        if (playerViewCamera == null && _isUsingComputer) return;
+        if (playerViewCamera == null || IsUsingComputer) return;
 
-        _isUsingComputer = true;
-
-        PlayerController.DisableCamera();
-        PlayerController.DisableMovement();
-        PlayerController.UnlockCursor();
-        playerUI.DisableCrosshair();
-
-        playerViewCamera.gameObject.SetActive(true);
-
+        IsUsingComputer = true;
         PlayerController.Input.onExit += ExitComputer;
     }
 
     private void ExitComputer()
     {
-        if (playerViewCamera == null && !_isUsingComputer) return;
+        if (playerViewCamera == null || !IsUsingComputer) return;
 
-        _isUsingComputer = false;
-
-        PlayerController.EnableCamera();
-        PlayerController.EnableMovement();
-        playerViewCamera.gameObject.SetActive(false);
-        PlayerController.LockCursor();
-        playerUI.EnableCrosshair();
-
-        // cameraVirtualScreen.DisableHit();
+        IsUsingComputer = false;
         PlayerController.Input.onExit -= ExitComputer;
     }
 
     private void InitializeComputer()
     {
-        desktopScreen.screenCaster = desktopRaycaster;
+        desktopScreen.SetScreenCaster(desktopRaycaster);
 
         foreach (ComputerApps app in apps)
         {
-            app.virtualScreen.screenCaster = app.raycaster;
+            app.virtualScreen.SetScreenCaster(app.raycaster);
             app.desktopExecuteable.onClick.AddListener(() => { OpenApp(app.name); });
         }
         CloseAllApps();
@@ -121,13 +118,8 @@ public class ComputerController : MonoBehaviour
 
     private void UpdateCameraScreen()
     {
-        apps.Where(x => x.name == "Camera").ToList()[0].virtualScreen.screenCamera = cameraManager.CurrentActiveCamera;
+        apps.FirstOrDefault(x => x.name == "Camera")?.virtualScreen.SetScreenCamera(cameraManager.CurrentActiveCamera);
         cameraUI.ChangeCanvasCamera(cameraManager.CurrentActiveCamera);
-    }
-
-    public void Interact()
-    {
-        OpenComputer();
     }
 
     public void OpenApp(string name)
@@ -157,5 +149,10 @@ public class ComputerController : MonoBehaviour
 
         desktopScreen.gameObject.SetActive(true);
         desktopScreen.EnableHit();
+    }
+
+    public override void Interact()
+    {
+        OpenComputer();
     }
 }

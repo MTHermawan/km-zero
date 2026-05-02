@@ -22,29 +22,6 @@ public class DialogueManager : MonoBehaviour
         public string content = "";
         public float delay = 0f;
         public bool appendDialogue = false; 
-
-        public string GetCleanContent()
-        {
-            string result = "";
-            for (int i = 0; i < content.Length; i++)
-            {
-                char c = content[i];
-                if (c == '^' && !(i - 1 >= 0 && content[i - 1] == '\\'))
-                {
-                    int j = i + 1;
-                    while (j < content.Length && char.IsDigit(content[j]))
-                    {
-                        j++;
-                    }
-                    i = j - 1;
-                }
-                else
-                {
-                    result += c;
-                }
-            }
-            return result;
-        }
     }
 
     private PlayerUIController _playerUI => PlayerUIController.Instance;
@@ -66,15 +43,16 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         CreatePlaceholder();
-        CreatePlaceholder();
+    }
+
+    void OnEnable()
+    {
+        NextDialogue();
     }
 
     void Update()
     {
-        if (InputSystem.actions.FindAction("Interact").WasPressedThisFrame())
-        {
-            SkipCurrentDialogue();
-        }
+        
     }
 
     public void CreateDialogue(string speaker, string content, float delay = 2f)
@@ -129,11 +107,11 @@ public class DialogueManager : MonoBehaviour
         if (currentWriter == null)
         {
             yield return null;
-            yield return new WaitUntil(() => InputSystem.actions.FindAction("Exit").WasPressedThisFrame());
+            yield return new WaitUntil(() => InputSystem.actions.FindAction("Interact").WasPressedThisFrame());
             StopCoroutine(currentWriter);
             yield return null;
 
-            string _writedText = "<b>" + dialogue.speaker + ":</b> " + dialogue.GetCleanContent();
+            string _writedText = "<b>" + dialogue.speaker + ":</b> " + dialogue.content;
             _playerUI.SetTextboxContent(_writedText);
 
             StartCoroutine(SkipDelay());
@@ -145,7 +123,7 @@ public class DialogueManager : MonoBehaviour
     IEnumerator SkipDelay()
     {
         yield return null;
-        yield return new WaitUntil(() => InputSystem.actions.FindAction("Exit").WasPressedThisFrame());
+        yield return new WaitUntil(() => InputSystem.actions.FindAction("Interact").WasPressedThisFrame());
         currentWriter = null;
         yield return null;
     }
@@ -169,7 +147,7 @@ public class DialogueManager : MonoBehaviour
         CreateDialogue
         (
             "Lorem Ipsum",
-            "\"Dolor sit amet, consectetur adipiscing elit. Donec euismod commodo risus et ullamcorper. In sit amet justo eget eros imperdiet blandit eu a ipsum. Vivamus nunc tellus, auctor vel nibh et, efficitur molestie felis.\""
+            "\"Japan is turning footsteps into electricity! Using piezoelectric tiles, every step you take generates a small amount of energy.\""
         );
     }
 

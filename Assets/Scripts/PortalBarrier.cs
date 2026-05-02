@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PortalBarrier : MonoBehaviour
+public class PortalBarrier : Interactable
 {
     public Transform pivot;
     public Transform stopTrigger;
@@ -10,13 +10,15 @@ public class PortalBarrier : MonoBehaviour
     private float targetZrotation = 0f;
     private bool isOpen = false;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         defaultZRotation = pivot.eulerAngles.z;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(0f, 0f, defaultZRotation + targetZrotation), speed * Time.deltaTime);
         stopTrigger?.gameObject.SetActive(pivot.eulerAngles.z < 50f);
     }
@@ -52,7 +54,7 @@ public class PortalBarrier : MonoBehaviour
         }
     }
 
-    public void Interact()
+    public override void Interact()
     {
         TogglePortal();
     }

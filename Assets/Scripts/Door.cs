@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : Interactable
 {
     private PlayerController _player => PlayerController.Instance;
     
@@ -9,14 +9,15 @@ public class Door : MonoBehaviour
     private float targetYRotation;
  
     private float defaultYRotation = 0f;
-    private Transform player;
     private bool isOpen;
  
-    void Start() {
+    protected override void Start() {
+        base.Start();
         defaultYRotation = transform.eulerAngles.y;
     }
  
-    void Update() {
+    protected override void Update() {
+        base.Update();
         pivot.rotation = Quaternion.Lerp(pivot.rotation, Quaternion.Euler(0f, defaultYRotation + targetYRotation, 0f), speed * Time.deltaTime);
     }
  
@@ -24,9 +25,8 @@ public class Door : MonoBehaviour
         isOpen = !isOpen;
  
         if (isOpen) {
-            Vector3 dir = (pos - transform.position);
-            Debug.Log(dir);
-            targetYRotation = -Mathf.Sign(Vector3.Dot(-transform.forward, dir)) * 90f;
+            Vector3 dir = pos - transform.position;
+            targetYRotation = -Mathf.Sign(Vector3.Dot(-transform.forward, dir)) * 90f; 
         } else {
             targetYRotation = 0f;
         }
@@ -42,13 +42,14 @@ public class Door : MonoBehaviour
             ToggleDoor(pos);
         }
     }
- 
-    public void Interact() {
-        ToggleDoor(player.position);
+
+    public override string GetInteractionName() {
+        if (isOpen) return "Close";
+        return "Open";
     }
- 
-    public string GetDescription() {
-        if (isOpen) return "Close the door";
-        return "Open the door";
+    
+    public override void Interact()
+    {
+        ToggleDoor(_player.transform.position);
     }
 }

@@ -78,6 +78,7 @@ Assets/Scripts/
   SecurityCameraManager.cs
  Trigger/StopTrigger.cs
  UI/
+  ActionKeyUI.cs
   PlayerUIController.cs
   SecurityCameraUIController.cs
   VirtualScreen.cs

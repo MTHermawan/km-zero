@@ -296,7 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2978474358540169323}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ScreenTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +332,6 @@ GameObject:
   - component: {fileID: 5979971328971587638}
   - component: {fileID: 2420081749015713700}
   - component: {fileID: 7690997516553243375}
-  - component: {fileID: 1249717393649944352}
   m_Layer: 6
   m_Name: Monitor
   m_TagString: Untagged
@@ -433,34 +432,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1249717393649944352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2325498375624459472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a03c3f1635b74489ac584011310f06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractTrigger
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 414217877177608081}
-        m_TargetAssemblyTypeName: ComputerController, Assembly-CSharp
-        m_MethodName: Interact
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  actionText: Interact
 --- !u!1 &3740084416475656164
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +446,7 @@ GameObject:
   - component: {fileID: 5318248489063072897}
   - component: {fileID: 6930983152684450749}
   - component: {fileID: 3402908455964950172}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraScreen (Virtual Screen)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +469,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.375, y: 1.16}
+  m_AnchoredPosition: {x: -0.378, y: 1.16}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &2644049170323126667
@@ -688,7 +659,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 133.7057, y: 133.7057}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4720732130664245216
 CanvasRenderer:
@@ -763,7 +734,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 36.294}
+  m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8127075229167944649
 CanvasRenderer:
@@ -879,7 +850,7 @@ GameObject:
   - component: {fileID: 3877026465164627712}
   - component: {fileID: 3716884165300170072}
   m_Layer: 5
-  m_Name: Button
+  m_Name: CameraExecuteable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -927,7 +898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -965,10 +936,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.11764706}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.3137255}
+    m_SelectedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.3137255}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1001,10 +972,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 1
   m_Spacing: 10
   m_ChildForceExpandWidth: 0
@@ -1028,7 +999,7 @@ GameObject:
   - component: {fileID: 7403939677078425858}
   - component: {fileID: 6328278244598517810}
   - component: {fileID: 1124072165949941597}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: DesktopScreen (Virtual Screen)_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1087,7 +1058,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: afb95987f0e24764bbe51a0e5f7a47f5, type: 2}
+  - {fileID: 2100000, guid: 97e44603c36188742bd42b3fcdb4c7fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1225,8 +1196,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05153ac1dfe68d946916d13da663ec92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComputerController
+  interactionName: Interact
+  triggers:
+  - {fileID: 7690997516553243375}
   playerViewCamera: {fileID: 3998047009192898871}
-  apps: []
+  apps:
+  - name: Camera
+    virtualScreen: {fileID: 3402908455964950172}
+    raycaster: {fileID: 4079670410137973872}
+    desktopExecuteable: {fileID: 3877026465164627712}
   cameraManager: {fileID: 0}
   cameraUI: {fileID: 3052339910966186327}
   desktopScreen: {fileID: 1124072165949941597}
@@ -1443,10 +1421,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8180443863185827925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_SizeDelta: {x: 0, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1656827453278435871
 CanvasRenderer:
@@ -1657,6 +1635,10 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 9107018405488852618, guid: d21781ba64410ba4bb1f71c3c6efe467, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1674,7 +1656,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 6818391747412463012}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -1699,6 +1681,10 @@ PrefabInstance:
     - target: {fileID: 639277558960533790, guid: 8cf843e8d4dd89b4f8fe2dbcfa208821, type: 3}
       propertyPath: m_Name
       value: SecurityCameraUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5146283948969974738, guid: 8cf843e8d4dd89b4f8fe2dbcfa208821, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -43.200012
       objectReference: {fileID: 0}
     - target: {fileID: 7259947468387230555, guid: 8cf843e8d4dd89b4f8fe2dbcfa208821, type: 3}
       propertyPath: m_Pivot.x
@@ -1801,3 +1787,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc19f2ba9df9c044c8ad0cd0a0fd2136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SecurityCameraUIController
+--- !u!114 &4079670410137973872 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4678755893641749095, guid: 8cf843e8d4dd89b4f8fe2dbcfa208821, type: 3}
+  m_PrefabInstance: {fileID: 8679458122789164567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster

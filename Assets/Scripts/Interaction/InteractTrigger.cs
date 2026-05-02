@@ -1,14 +1,18 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class InteractTrigger : MonoBehaviour, IInteractable
+public class InteractTrigger : MonoBehaviour
 {
-    public UnityEvent unityEvent;
-    [SerializeField] private string actionText = "Interact";
+    public Interactable InteractableTarget { get; private set; }
 
-    public void Interact()
+    public void SetInteractable(Interactable target)
     {
-        unityEvent?.Invoke();
+        InteractableTarget = target;
     }
+
+    // public UnityEvent unityEvent;
+
+    // public override void Interact()
+    // {
+    //     unityEvent?.Invoke();
+    // }
 }

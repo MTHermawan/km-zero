@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,16 +15,7 @@ public class PlayerController : MonoBehaviour
     public float crouchSpeed = 2.5f;
     public float jumpForce = 5f;
     public float gravity = -19.62f;
-    private int _disableMoveCount = 0;
-    public int DisableMoveCount
-    {
-        get => _disableMoveCount;
-        private set
-        {
-            _disableMoveCount = Mathf.Clamp(value, 0, value);
-        }
-    }
-    private bool CanMove => DisableMoveCount <= 0;
+    public HashSet<string> _disableMoveSet = new();
 
     [Header("Mouse Look")]
     public float mouseSensitivity = 0.5f;
@@ -69,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (CanMove)
+        if (CanMove())
         {
             isSprintHeld = InputSystem.actions.FindAction("Sprint").IsPressed();
             isCrouchHeld = InputSystem.actions.FindAction("Crouch").IsPressed();
@@ -112,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     public void Look()
     {
-        if (!CanMove) return;
+        if (!CanMove()) return;
 
         float mouseX = Input.LookInputVector.x * mouseSensitivity;
         float mouseY = Input.LookInputVector.y * mouseSensitivity;
@@ -124,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if (!CanMove || !isGrounded || isCrouchHeld) return;
+        if (!CanMove() || !isGrounded || isCrouchHeld) return;
 
         velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
     }
@@ -140,8 +132,9 @@ public class PlayerController : MonoBehaviour
         CameraTransform.gameObject.SetActive(false);
     }
 
-    public void EnableMovement() => DisableMoveCount--;
-    public void DisableMovement() => DisableMoveCount++;
+    public void DisableMovement(string disableId) => _disableMoveSet.Add(disableId);
+    public void EnableMovement(string disableId) => _disableMoveSet.Remove(disableId);
+    private bool CanMove() => _disableMoveSet.Count <= 0;
     public void LockCursor() => UnlockCursorCount--;
     public void UnlockCursor() => UnlockCursorCount++;
 
