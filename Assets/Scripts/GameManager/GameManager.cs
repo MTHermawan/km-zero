@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
             return _player;
         }
     }
+
+    private Dictionary<string, Coroutine> _runningCoroutines = new();
 
     void Awake()
     {
@@ -51,6 +54,20 @@ public class GameManager : MonoBehaviour
                 return i;
         }
         return 0;
+    }
+
+    public void UniqueCoroutine(string id, IEnumerator newCoroutine)
+    {
+        KillCoroutine(id);  
+        _runningCoroutines[id] = StartCoroutine(newCoroutine);
+    }
+
+    public void KillCoroutine(string id)
+    {
+        if (!_runningCoroutines.ContainsKey(id)) return;
+
+        StopCoroutine(_runningCoroutines[id]);
+        _runningCoroutines.Remove(id);
     }
 
     private static GameManager s_instance;

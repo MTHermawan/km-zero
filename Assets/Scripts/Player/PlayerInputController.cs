@@ -1,9 +1,11 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
 {
+    public CinemachineInputAxisController cinemachineInput;
     public Vector2 MoveInputVector { get; private set; }
     public Vector2 LookInputVector { get; private set; }
     public Vector2 ZoomInputVector { get; private set; }
@@ -12,6 +14,8 @@ public class PlayerInputController : MonoBehaviour
     public Action onExit;
     public Action onZoom;
     public Action onRotate;
+    public Action onInteract;
+    public Action onLateInteract;
     
     private void OnMove(InputValue inputValue)
     {
@@ -29,8 +33,10 @@ public class PlayerInputController : MonoBehaviour
         onJump?.Invoke();
     }
 
+    private PlayerUIController playerUI => PlayerUIController.Instance;
     public void OnInteract()
     {
+        onInteract?.Invoke();
         if (TryGetComponent(out Interactor interactable))
         {
             interactable.PerformInteract();
@@ -51,5 +57,15 @@ public class PlayerInputController : MonoBehaviour
     public void OnRotate()
     {
         onRotate?.Invoke();
+    }
+
+    public void EnablePlayerCinemachineInput()
+    {
+        cinemachineInput.enabled = true;
+    }
+
+    public void DisablePlayerCinemachineInput()
+    {
+        cinemachineInput.enabled = false;
     }
 }

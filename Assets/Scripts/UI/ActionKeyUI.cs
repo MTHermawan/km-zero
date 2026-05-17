@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -37,6 +38,9 @@ public class ActionKeyUI : MonoBehaviour
     {
         Key = actionKey;
         Label = actionLabel;
+
+        bool disable = string.IsNullOrEmpty(actionKey) || string.IsNullOrEmpty(actionLabel);
+        gameObject.SetActive(!disable);
     }
 
     public void UpdateLabel(string newLabel)

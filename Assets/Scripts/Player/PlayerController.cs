@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,8 +20,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Mouse Look")]
     public float mouseSensitivity = 0.5f;
-    public Transform CameraTransform { get; private set; }
+    public Transform playerCamera { get; private set; }
     public Transform bodyTransform;
+    public CinemachineBrain cinemachineBrain;
+    [SerializeField] private CinemachineCamera cinemachineFPCamera;
+    private CinemachinePanTilt PanTilt => cinemachineFPCamera?.GetComponent<CinemachinePanTilt>();
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
@@ -51,7 +55,9 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Input = GetComponent<PlayerInputController>();
-        CameraTransform = Camera.main.transform;
+        playerCamera = Camera.main.transform;
+        cinemachineBrain ??= playerCamera?.GetComponent<CinemachineBrain>();
+        // cinemachineFPCamera ??= playerCamera?.GetComponent<CinemachineBrain>()?.ActiveVirtualCamera;
     }
 
     void Start()
@@ -99,19 +105,25 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         Input.onLook += Look;
-        Input.onJump += Jump;
+        // Input.onJump += Jump;
     }
 
     public void Look()
     {
         if (!CanMove()) return;
 
-        float mouseX = Input.LookInputVector.x * mouseSensitivity;
-        float mouseY = Input.LookInputVector.y * mouseSensitivity;
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        CameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+        // float mouseX = Input.LookInputVector.x * mouseSensitivity;
+        // float mouseY = Input.LookInputVector.y * mouseSensitivity;
+        // xRotation -= mouseY;
+        // xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        // playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        
+        foreach (var c in Input?.cinemachineInput?.Controllers)
+        {
+            c.Input.Gain = Mathf.Sign(c.Input.Gain) * mouseSensitivity;
+        }
+        
+        transform.localEulerAngles = Vector3.up * PanTilt.PanAxis.Value;
     }
 
     public void Jump()
@@ -121,16 +133,16 @@ public class PlayerController : MonoBehaviour
         velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
     }
 
-    public void EnableCamera()
-    {
-        // PlayerUI.EnableCrosshair();
-        CameraTransform.gameObject.SetActive(true);
-    }
-    public void DisableCamera()
-    {
-        // PlayerUI.DisableCrosshair();
-        CameraTransform.gameObject.SetActive(false);
-    }
+    // public void EnableCamera()
+    // {
+    //     // PlayerUI.EnableCrosshair();
+    //     playerCamera.gameObject.SetActive(true);
+    // }
+    // public void DisableCamera()
+    // {
+    //     // PlayerUI.DisableCrosshair();
+    //     playerCamera.gameObject.SetActive(false);
+    // }
 
     public void DisableMovement(string disableId) => _disableMoveSet.Add(disableId);
     public void EnableMovement(string disableId) => _disableMoveSet.Remove(disableId);

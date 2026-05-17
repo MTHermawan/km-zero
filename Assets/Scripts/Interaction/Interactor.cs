@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
-    private PlayerUIController _playerUI => PlayerUIController.Instance;
+    private PlayerUIController playerUI => PlayerUIController.Instance;
     public Transform interactorSource;
     public float interactRange;
     private Interactable _currentInteractable = null;
@@ -16,27 +16,41 @@ public class Interactor : MonoBehaviour
         {
             if (_currentInteractable != value)
             {
-                if (_currentInteractable != null)
-                {
-                    _currentInteractable.OnInteractionNameChanged -= OnInteractionNameChanged;
-                }
-                
                 _currentInteractable = value;
                 if (_currentInteractable == null)
                 {
-                    _playerUI.DeleteActionKey("E");
+                    lastInteractionName = null;
                 }
                 else
                 {
-                    _currentInteractable.OnInteractionNameChanged += OnInteractionNameChanged;
-                    _currentInteractable.OnRaycastHit();
-                    _playerUI.AddActionKey("E", _currentInteractable.GetInteractionName());
+                    lastInteractionName = _currentInteractable.GetInteractionName();
+                    Debug.Log($"Current Interactable: {lastInteractionName}");
                 }
             }
         }
     }
     [SerializeField] private LayerMask hitLayers;
     private GameObject lastHitObj;
+    private string _lastInteractionName;
+    public string lastInteractionName
+    {
+        get => _lastInteractionName;
+        private set
+        {
+            if (_lastInteractionName != value)
+            {
+                _lastInteractionName = value;
+                if (string.IsNullOrEmpty(_lastInteractionName) && CanInteract())
+                {
+                    playerUI.DeleteActionKey("E");  
+                }
+                else if (!string.IsNullOrEmpty(_lastInteractionName))
+                {
+                    playerUI.AddActionKey("E", _lastInteractionName);
+                }
+            }
+        }
+    }
     private HashSet<string> _interactorDisableSet = new();
 
     void Awake()
@@ -51,14 +65,19 @@ public class Interactor : MonoBehaviour
 
     private void CheckInteractable()
     {
-        if (!CanInteract()) return;
+        if (!CanInteract())
+        {
+            if (CurrentInteractable != null) CurrentInteractable = null;
+            lastHitObj = null;
+            return;
+        }
 
         Ray r = new(interactorSource.position, interactorSource.forward);
-
         if (Physics.Raycast(r, out RaycastHit hitInfo, interactRange, hitLayers))
         {
             if (hitInfo.collider.gameObject != lastHitObj || CurrentInteractable == null)
             {
+                lastHitObj = hitInfo.collider.gameObject;
                 if (hitInfo.collider.gameObject.TryGetComponent(out InteractTrigger trigger))
                 {
                     CurrentInteractable = trigger.InteractableTarget;
@@ -66,6 +85,17 @@ public class Interactor : MonoBehaviour
                 else
                 {
                     CurrentInteractable = null;
+                    lastInteractionName = null;
+                }
+
+                if (CurrentInteractable != null)
+                {
+                    string latestName = CurrentInteractable.GetInteractionName();
+                    if (latestName != lastInteractionName)
+                    {
+                        lastInteractionName = latestName;
+                        playerUI.AddActionKey("E", latestName);
+                    }
                 }
             }
         }
@@ -77,16 +107,28 @@ public class Interactor : MonoBehaviour
 
     public void PerformInteract()
     {
-        CurrentInteractable?.onObjectInteracted.Invoke();
+        if (CurrentInteractable == null) return;
+        CurrentInteractable.onObjectInteracted?.Invoke();
+        lastHitObj = null;
+        CurrentInteractable = null;
+        lastInteractionName = null;
     }
 
     public void DisableInteraction(string disableId) => _interactorDisableSet.Add(disableId);
     public void EnableInteract(string disableId) => _interactorDisableSet.Remove(disableId);
     public bool CanInteract() => _interactorDisableSet.Count <= 0;
 
-    private void OnInteractionNameChanged(string newName)
+    private static Interactor s_instance;
+    public static Interactor Instance
     {
-        _playerUI.AddActionKey("E", newName);
+        get
+        {
+            if (s_instance == null)
+            {
+                s_instance = FindFirstObjectByType<Interactor>();
+            }
+            return s_instance;
+        }
     }
 }
 

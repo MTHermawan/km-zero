@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,16 +14,19 @@ public class ComputerController : Interactable
     {
         public string name;
         public VirtualScreen virtualScreen;
-        public GraphicRaycaster raycaster;
+        public GraphicRaycaster screenUI;
         public Button desktopExecuteable;
+        public Camera screenCamera;
     }
 
     private PlayerController PlayerController => PlayerController.Instance;
-    private PlayerUIController playerUI => PlayerUIController.Instance;
+    private PlayerUIController PlayerUI => PlayerUIController.Instance;
+    private Interactor Interactor => Interactor.Instance;
+    private GameManager GameManager => GameManager.Instance;
 
 
     [Header("General")]
-    public Camera playerViewCamera;
+    public CinemachineCamera playerComputerView;
     private bool _isUsingComputer = false;
     public bool IsUsingComputer
     {
@@ -30,26 +35,7 @@ public class ComputerController : Interactable
         {
             if (_isUsingComputer != value)
             {
-                string varId = nameof(IsUsingComputer) + GetInstanceID();
-                
                 _isUsingComputer = value;
-                Debug.Log(_isUsingComputer);
-                if (!_isUsingComputer)
-                {
-                    PlayerController.EnableCamera();
-                    PlayerController.EnableMovement(varId);
-                    playerViewCamera.gameObject.SetActive(false);
-                    PlayerController.LockCursor();
-                    playerUI.EnableCrosshair(varId);
-                }
-                else
-                {
-                    PlayerController.DisableCamera();
-                    PlayerController.DisableMovement(varId);
-                    playerViewCamera.gameObject.SetActive(true);
-                    PlayerController.UnlockCursor();
-                    playerUI.DisableCrosshair(varId);
-                }
             }
         }
     }
@@ -58,11 +44,12 @@ public class ComputerController : Interactable
 
     [Header("Camera")]
     [SerializeField] private SecurityCameraManager cameraManager;
-    [SerializeField] private SecurityCameraUIController cameraUI;
+    [SerializeField] private SecurityCameraUIController cameraUIController;
 
     [Header("Desktop")]
     public VirtualScreen desktopScreen;
-    public GraphicRaycaster desktopRaycaster;
+    public Camera desktopCamera;
+    public GraphicRaycaster desktopUI;
 
     protected override void Start()
     {
@@ -72,54 +59,92 @@ public class ComputerController : Interactable
 
     private void OpenComputer()
     {
-        if (playerViewCamera == null || IsUsingComputer) return;
+        if (playerComputerView == null || IsUsingComputer) return;
+
 
         IsUsingComputer = true;
-        PlayerController.Input.onExit += ExitComputer;
+        playerComputerView.gameObject.SetActive(true);
+
+        PlayerController.Input.DisablePlayerCinemachineInput();
+        PlayerController.DisableMovement(nameof(IsUsingComputer) + GetInstanceID());
+        PlayerController.UnlockCursor();
+        Interactor.DisableInteraction(nameof(IsUsingComputer) + GetInstanceID());
+        PlayerUI.DisableCrosshair(nameof(IsUsingComputer) + GetInstanceID());
+        OpenDesktop();
+
+        PlayerController.Input.onInteract += ExitComputer;
+        PlayerUI.AddActionKey("E", "Turn Off");
     }
 
     private void ExitComputer()
     {
-        if (playerViewCamera == null || !IsUsingComputer) return;
+        if (playerComputerView == null || !IsUsingComputer) return;
 
-        IsUsingComputer = false;
-        PlayerController.Input.onExit -= ExitComputer;
+        IEnumerator ExitComputerCoroutine()
+        {
+            yield return null;
+            IsUsingComputer = false;
+            playerComputerView.gameObject.SetActive(false);
+            PlayerUI.EnableCrosshair(nameof(IsUsingComputer) + GetInstanceID());
+            Interactor.EnableInteract(nameof(IsUsingComputer) + GetInstanceID());
+            PlayerController.LockCursor();
+            TurnOffPower();
+
+            yield return null;
+            yield return new WaitUntil(() => !PlayerController.cinemachineBrain.IsBlending);
+            PlayerController.Input.EnablePlayerCinemachineInput();
+            PlayerController.EnableMovement(nameof(IsUsingComputer) + GetInstanceID());
+            yield return null;
+
+            PlayerController.Input.onExit -= ExitComputer;
+        }
+
+        GameManager.UniqueCoroutine(nameof(ExitComputer) + GetInstanceID(), ExitComputerCoroutine());
     }
 
     private void InitializeComputer()
     {
-        desktopScreen.SetScreenCaster(desktopRaycaster);
+        desktopScreen?.SetScreenCamera(desktopCamera);
+        desktopScreen?.SetScreenCaster(desktopUI);
 
         foreach (ComputerApps app in apps)
         {
-            app.virtualScreen.SetScreenCaster(app.raycaster);
+            if (app.virtualScreen == null || app.screenUI == null || app.desktopExecuteable == null) continue;
+
+            app.virtualScreen?.SetScreenCamera(app.screenCamera);
+            app.virtualScreen?.SetScreenCaster(app.screenUI);
             app.desktopExecuteable.onClick.AddListener(() => { OpenApp(app.name); });
         }
-        CloseAllApps();
-
         InitializeCameraScreen();
+        TurnOffPower();
     }
 
     private void InitializeCameraScreen()
     {
-        if (cameraManager == null || cameraUI == null) return;
+        if (cameraManager == null || cameraUIController == null) return;
 
         cameraManager.onCameraSwitched += () =>
         {
             UpdateCameraScreen();
         };
 
-        cameraUI.onPreviousCameraClick += cameraManager.PrevCamera;
-        cameraUI.onNextCameraClick += cameraManager.NextCamera;
-        cameraUI.onExitCameraClick += CloseAllApps;
+        cameraUIController.onPreviousCameraClick += cameraManager.PrevCamera;
+        cameraUIController.onNextCameraClick += cameraManager.NextCamera;
+        cameraUIController.onExitCameraClick += OpenDesktop;
 
         cameraManager.ResetState();
     }
 
     private void UpdateCameraScreen()
     {
-        apps.FirstOrDefault(x => x.name == "Camera")?.virtualScreen.SetScreenCamera(cameraManager.CurrentActiveCamera);
-        cameraUI.ChangeCanvasCamera(cameraManager.CurrentActiveCamera);
+        ComputerApps cameraApp = apps.FirstOrDefault(x => x.name == "Camera");
+        if (cameraApp != null)
+        {
+            cameraApp.screenCamera = cameraManager.CurrentActiveCamera;
+
+            cameraApp?.virtualScreen?.SetScreenCamera(cameraApp.screenCamera);
+            cameraUIController?.ChangeCanvasCamera(cameraManager.CurrentActiveCamera);
+        }
     }
 
     public void OpenApp(string name)
@@ -128,7 +153,7 @@ public class ComputerController : Interactable
         {
             if (app.name == name)
             {
-                app.virtualScreen.gameObject.SetActive(true);
+                app.virtualScreen?.gameObject.SetActive(true);
                 app.virtualScreen.EnableHit();
             }
             else
@@ -139,16 +164,24 @@ public class ComputerController : Interactable
         }
     }
 
-    public void CloseAllApps()
+    public void OpenDesktop()
     {
         foreach (ComputerApps app in apps)
         {
-            app.virtualScreen.gameObject.SetActive(false);
-            app.virtualScreen.DisableHit();
+            app.virtualScreen?.gameObject.SetActive(false);
+            app.virtualScreen?.DisableHit();
         }
 
-        desktopScreen.gameObject.SetActive(true);
-        desktopScreen.EnableHit();
+        desktopScreen?.gameObject.SetActive(true);
+        desktopScreen?.EnableHit();
+    }
+
+    private void TurnOffPower()
+    {
+        OpenDesktop();
+
+        desktopScreen?.gameObject.SetActive(false);
+        desktopScreen?.DisableHit();
     }
 
     public override void Interact()

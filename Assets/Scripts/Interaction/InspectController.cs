@@ -46,7 +46,9 @@ public class InspectController : MonoBehaviour
                     _player.Input.onRotate -= ToggleRotation;
                     _player.EnableMovement(varId);
                     _playerUI.EnableCrosshair(varId);
+                    _player.Input.EnablePlayerCinemachineInput();
                     _playerUI.DisableInspectUI();
+
 
                     if (!isRotating)
                     {
@@ -59,6 +61,7 @@ public class InspectController : MonoBehaviour
                     _player.Input.onZoom += ZoomObject;
                     _player.DisableMovement(varId);
                     _playerUI.DisableCrosshair(varId);
+                    _player.Input.DisablePlayerCinemachineInput();
                     _playerUI.EnableInspectUI();
 
                     ToggleRotation(_isRotating);
@@ -101,7 +104,7 @@ public class InspectController : MonoBehaviour
             if (HeldObj == null) //if currently not holding anything
             {
                 //perform raycast to check if player is looking at object within pickuprange
-                if (Physics.Raycast(_player.CameraTransform.position, _player.CameraTransform.TransformDirection(Vector3.forward), out RaycastHit hit, pickUpRange))
+                if (Physics.Raycast(_player.playerCamera.position, _player.playerCamera.TransformDirection(Vector3.forward), out RaycastHit hit, pickUpRange))
                 {
                     //make sure pickup tag is attached
                     if (hit.transform.gameObject.CompareTag("canPickUp"))

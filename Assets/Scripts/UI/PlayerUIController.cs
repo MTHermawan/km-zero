@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,8 +39,7 @@ public class PlayerUIController : MonoBehaviour
     {
         crosshairPanel?.SetActive(_crosshairDisableSet.Count <= 0);
 
-        ClearActionKeys();
-
+        // RefreshActionKeys();
     }
 
     public void DisableCrosshair(string disableId)
@@ -84,6 +81,8 @@ public class PlayerUIController : MonoBehaviour
 
     public void AddActionKey(string actionKey, string actionLabel)
     {
+        Debug.Log($"AddActionKey: {actionKey} - {actionLabel}");
+
         keyList[actionKey] = actionLabel;
         ActionKeyUI existedKey = GetKeyUI(actionKey);
         if (existedKey != null)
@@ -100,8 +99,22 @@ public class PlayerUIController : MonoBehaviour
 
     public void DeleteActionKey(string actionKey)
     {
+        // Debug.Log($"DeleteActionKey: {actionKey}");
         if (!keyList.ContainsKey(actionKey)) return;
-        Destroy(GetKeyUI(actionKey).gameObject);
+
+        ActionKeyUI keyUI = GetKeyUI(actionKey);
+        if (keyUI != null) DestroyImmediate(keyUI.gameObject); // ← ganti Destroy
+        keyList.Remove(actionKey);
+    }
+
+    public void DeleteActionKey(string actionKey, string actionLabel)
+    {
+        // Debug.Log($"DeleteActionKey: {actionKey} - {actionLabel}");
+
+        if (!keyList.ContainsKey(actionKey)) return;
+        if (keyList[actionKey] != actionLabel) return;
+
+        Destroy(GetKeyUI(actionKey)?.gameObject);
         keyList.Remove(actionKey);
     }
 
