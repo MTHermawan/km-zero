@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
 {
+    private GameManager GameManager => GameManager.Instance;
+    private PlayerInput UIPlayerInput;
+
+    [SerializeField] private GameObject blackpanel;
     [Header("Overlay")]
-    [SerializeField] private GameObject blackscreen;
     [SerializeField] private GameObject crosshairPanel;
     private HashSet<string> _crosshairDisableSet = new();
 
@@ -24,10 +28,23 @@ public class PlayerUIController : MonoBehaviour
     [SerializeField] private GameObject actionKeyItemPrefab;
     private Dictionary<string, string> keyList = new();
 
+    [Header("Time Display")]
+    [SerializeField] private TMP_Text timeDisplay;
+
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseMenu;
+
+    [Header("Game Over")]
+    [SerializeField] private GameObject gameOverPanel;
+
+    [Header("Shift Result")]
+    [SerializeField] private GameObject shiftResultPanel;
+
 
     void Awake()
     {
         RefreshUIState();
+        UIPlayerInput = GetComponent<PlayerInput>();
     }
 
     void Start()
@@ -81,7 +98,7 @@ public class PlayerUIController : MonoBehaviour
 
     public void AddActionKey(string actionKey, string actionLabel)
     {
-        Debug.Log($"AddActionKey: {actionKey} - {actionLabel}");
+        // Debug.Log($"AddActionKey: {actionKey} - {actionLabel}");
 
         keyList[actionKey] = actionLabel;
         ActionKeyUI existedKey = GetKeyUI(actionKey);
@@ -158,6 +175,63 @@ public class PlayerUIController : MonoBehaviour
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(l.GetComponent<RectTransform>());
         }
+    }
+
+    public void UpdateTimeDisplay(string timeString)
+    {
+        if (timeDisplay != null)
+        {
+            timeDisplay.SetText(timeString);
+        }
+    }
+
+    public void ShowGameOver()
+    {
+        gameOverPanel.SetActive(true);
+    }
+
+    public void ShowShiftResult()
+    {
+        shiftResultPanel.SetActive(true);
+    }
+
+    public void TogglePauseMenu(bool isActive)
+    {
+        if (pauseMenu == null) return;
+
+        pauseMenu.SetActive(isActive);
+
+        if (isActive)
+        {
+            GameManager.PauseGame();
+            // Rebuild dari root layout pause menu
+            LayoutGroup rootLayout = pauseMenu.GetComponentInChildren<LayoutGroup>();
+            RefreshLayoutGroup(rootLayout);
+        }
+        else
+        {
+            GameManager.ResumeGame();
+        }
+    }
+
+    public void ContinueButton()
+    {
+        GameManager.CreditScene();
+    }
+
+    public void RestartButton()
+    {
+        GameManager.RestartLevel();
+    }
+
+    public void BackToMainMenu()
+    {
+        GameManager.MainMenu();
+    }
+
+    public void QuitButton()
+    {
+        GameManager.QuitGame();
     }
 
     private static PlayerUIController s_instance;

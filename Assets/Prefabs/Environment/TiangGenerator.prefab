@@ -112,7 +112,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 8295441001898006641, guid: 91e166e3227d28d40919cf1baea67391, type: 3}
+  m_Mesh: {fileID: 8295441001898006641, guid: 3bb0260e1011e87488df27d55cbffdcf, type: 3}
 --- !u!1 &5332580826137932765
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 2435207018870752350}
   - component: {fileID: 148961999301369310}
   - component: {fileID: 5830528797717097467}
+  - component: {fileID: 4519669060902908333}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -226,7 +227,27 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2698757342573874753, guid: 91e166e3227d28d40919cf1baea67391, type: 3}
+  m_Mesh: {fileID: -2698757342573874753, guid: 00ae8eb6dc016dd488eccee6d91bf3bf, type: 3}
+--- !u!114 &4519669060902908333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5332580826137932765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6490c4cedc4f1d4bba0afefc7722faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerGenerator
+  _interactionName: Interact
+  triggers:
+  - {fileID: 5951736784849674221}
+  - {fileID: 2203769311803716038}
+  isActive: 1
+  switchPivot: {fileID: 2309151786681449750}
+  switchRotationAngle: 175
+  rotationSpeed: 1.5
 --- !u!1 &6489412020180500332
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +361,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -1389486161753415046, guid: 91e166e3227d28d40919cf1baea67391, type: 3}
+  m_Mesh: {fileID: -1389486161753415046, guid: 00ae8eb6dc016dd488eccee6d91bf3bf, type: 3}
 --- !u!1 &6577271715086832221
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +475,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -3338526055815450903, guid: 91e166e3227d28d40919cf1baea67391, type: 3}
+  m_Mesh: {fileID: -3338526055815450903, guid: 00ae8eb6dc016dd488eccee6d91bf3bf, type: 3}
 --- !u!1001 &6231960908116954834
 PrefabInstance:
   m_ObjectHideFlags: 0

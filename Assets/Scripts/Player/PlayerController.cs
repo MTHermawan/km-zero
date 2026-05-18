@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour
             isGrounded = controller.isGrounded;
             if (isGrounded && velocity.y < 0) velocity.y = -2f;
 
+            Debug.Log($"Sprint: {isSprintHeld}, Crouch: {isCrouchHeld}, Grounded: {isGrounded}");
+
             // 2. SPEED LOGIC (PRIORITY: CROUCH > RUN > WALK)
             float currentSpeed = walkSpeed;
             if (isCrouchHeld)

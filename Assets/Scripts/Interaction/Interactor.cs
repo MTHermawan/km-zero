@@ -24,7 +24,6 @@ public class Interactor : MonoBehaviour
                 else
                 {
                     lastInteractionName = _currentInteractable.GetInteractionName();
-                    Debug.Log($"Current Interactable: {lastInteractionName}");
                 }
             }
         }

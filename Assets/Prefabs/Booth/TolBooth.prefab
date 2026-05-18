@@ -586,8 +586,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: TolBooth
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3451118302482216456, guid: 9be9d8b8ee5ceae449d6a0146b0b1e7f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9be9d8b8ee5ceae449d6a0146b0b1e7f, type: 3}
@@ -764,7 +763,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6823091919149739281, guid: 3f5d0b77af10f6d49b160b023b8b8eb3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.014300346
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6823091919149739281, guid: 3f5d0b77af10f6d49b160b023b8b8eb3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -772,7 +771,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6823091919149739281, guid: 3f5d0b77af10f6d49b160b023b8b8eb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.14225006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6823091919149739281, guid: 3f5d0b77af10f6d49b160b023b8b8eb3, type: 3}
       propertyPath: m_LocalRotation.w

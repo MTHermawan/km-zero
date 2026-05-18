@@ -16,6 +16,7 @@ public class PlayerInputController : MonoBehaviour
     public Action onRotate;
     public Action onInteract;
     public Action onLateInteract;
+    public Action onPause;
     
     private void OnMove(InputValue inputValue)
     {
@@ -67,5 +68,11 @@ public class PlayerInputController : MonoBehaviour
     public void DisablePlayerCinemachineInput()
     {
         cinemachineInput.enabled = false;
+    }
+
+    public void OnPause()
+    {
+        onPause?.Invoke();
+        playerUI.TogglePauseMenu(!GameManager.Instance.IsPausing);
     }
 }
