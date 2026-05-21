@@ -116,7 +116,7 @@ public class TimeManager : MonoBehaviour
         DisplayMinute = minute;
         DisplayTimeString = $"{DisplayHour:D2}:{DisplayMinute:D2}";
 
-        Debug.Log($"[TimeManager] {_timeProgress}% → {DisplayTimeString}");
+        // Debug.Log($"[TimeManager] {_timeProgress}% → {DisplayTimeString}");
         onDisplayTimeChanged?.Invoke(DisplayHour, DisplayMinute);
     }
 

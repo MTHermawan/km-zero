@@ -50,6 +50,9 @@ public class ComputerController : Interactable
     public VirtualScreen desktopScreen;
     public Camera desktopCamera;
     public GraphicRaycaster desktopUI;
+    private bool IsDesktopOpen =>
+    desktopScreen != null &&
+    desktopScreen.gameObject.activeSelf;
 
     protected override void Start()
     {
@@ -59,47 +62,75 @@ public class ComputerController : Interactable
 
     private void OpenComputer()
     {
-        if (playerComputerView == null || IsUsingComputer) return;
-
+        if (playerComputerView == null || IsUsingComputer)
+            return;
 
         IsUsingComputer = true;
+
         playerComputerView.gameObject.SetActive(true);
 
         PlayerController.Input.DisablePlayerCinemachineInput();
-        PlayerController.DisableMovement(nameof(IsUsingComputer) + GetInstanceID());
+
+        PlayerController.DisableMovement(
+            nameof(IsUsingComputer) + GetInstanceID());
+
         PlayerController.UnlockCursor();
-        Interactor.DisableInteraction(nameof(IsUsingComputer) + GetInstanceID());
-        PlayerUI.DisableCrosshair(nameof(IsUsingComputer) + GetInstanceID());
+
+        Interactor.DisableInteraction(
+            nameof(IsUsingComputer) + GetInstanceID());
+
+        PlayerUI.DisableCrosshair(
+            nameof(IsUsingComputer) + GetInstanceID());
+
         OpenDesktop();
 
         PlayerController.Input.onInteract += ExitComputer;
-        PlayerUI.AddActionKey("E", "Turn Off");
     }
 
     private void ExitComputer()
     {
-        if (playerComputerView == null || !IsUsingComputer) return;
+        // hanya boleh keluar dari desktop
+        if (playerComputerView == null ||
+            !IsUsingComputer ||
+            !IsDesktopOpen)
+            return;
 
         IEnumerator ExitComputerCoroutine()
         {
+            PlayerUI.DeleteActionKey("E", "Turn Off");
+
             yield return null;
+
             IsUsingComputer = false;
+
             playerComputerView.gameObject.SetActive(false);
-            PlayerUI.EnableCrosshair(nameof(IsUsingComputer) + GetInstanceID());
-            Interactor.EnableInteract(nameof(IsUsingComputer) + GetInstanceID());
+
+            PlayerUI.EnableCrosshair(
+                nameof(IsUsingComputer) + GetInstanceID());
+
+            Interactor.EnableInteract(
+                nameof(IsUsingComputer) + GetInstanceID());
+
             PlayerController.LockCursor();
+
             TurnOffPower();
 
             yield return null;
-            yield return new WaitUntil(() => !PlayerController.cinemachineBrain.IsBlending);
-            PlayerController.Input.EnablePlayerCinemachineInput();
-            PlayerController.EnableMovement(nameof(IsUsingComputer) + GetInstanceID());
-            yield return null;
 
-            PlayerController.Input.onExit -= ExitComputer;
+            yield return new WaitUntil(
+                () => !PlayerController.cinemachineBrain.IsBlending);
+
+            PlayerController.Input.EnablePlayerCinemachineInput();
+
+            PlayerController.EnableMovement(
+                nameof(IsUsingComputer) + GetInstanceID());
+
+            PlayerController.Input.onInteract -= ExitComputer;
         }
 
-        GameManager.UniqueCoroutine(nameof(ExitComputer) + GetInstanceID(), ExitComputerCoroutine());
+        GameManager.UniqueCoroutine(
+            nameof(ExitComputer) + GetInstanceID(),
+            ExitComputerCoroutine());
     }
 
     private void InitializeComputer()
@@ -149,17 +180,22 @@ public class ComputerController : Interactable
 
     public void OpenApp(string name)
     {
+        desktopScreen?.DisableHit();
+        desktopScreen?.gameObject.SetActive(false);
+
+        PlayerUI.DeleteActionKey("E", "Turn Off");
+
         foreach (ComputerApps app in apps)
         {
             if (app.name == name)
             {
                 app.virtualScreen?.gameObject.SetActive(true);
-                app.virtualScreen.EnableHit();
+                app.virtualScreen?.EnableHit();
             }
             else
             {
-                app.virtualScreen.gameObject.SetActive(false);
-                app.virtualScreen.DisableHit();
+                app.virtualScreen?.gameObject.SetActive(false);
+                app.virtualScreen?.DisableHit();
             }
         }
     }
@@ -174,6 +210,11 @@ public class ComputerController : Interactable
 
         desktopScreen?.gameObject.SetActive(true);
         desktopScreen?.EnableHit();
+
+        if (IsUsingComputer)
+        {
+            PlayerUI.AddActionKey("E", "Turn Off");
+        }
     }
 
     private void TurnOffPower()

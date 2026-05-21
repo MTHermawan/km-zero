@@ -87,6 +87,9 @@ public class InspectController : MonoBehaviour
     private Vector3 originalRot;
     private Vector3 originalPos;
 
+    private bool _showingPickupHint = false;
+    private bool _showingDropHint = false;
+
     //Reference to script which includes mouse movement of player (looking around)
     //we want to disable the player looking around when rotating the object
     //example below 
@@ -99,6 +102,8 @@ public class InspectController : MonoBehaviour
 
     void Update()
     {
+        UpdateInteractHint();
+
         if (InputSystem.actions.FindAction("Interact").WasPressedThisFrame()) //change E to whichever key you want to press to pick up
         {
             if (HeldObj == null) //if currently not holding anything
@@ -140,21 +145,27 @@ public class InspectController : MonoBehaviour
             originalRot = HeldObj.transform.localEulerAngles;
 
             heldObjRb.isKinematic = true;
-            HeldObj.layer = GameManager.GetMaskLayers(HoldLayer.value); //change the object layer to the holdLayer
+            SetLayerRecursively(HeldObj, GameManager.GetMaskLayers(HoldLayer.value)); //change the object layer and all children to the holdLayer
             HeldObj.transform.eulerAngles = holdPos.eulerAngles;
-            HeldObj.transform.RotateAround(holdPos.position, -holdPos.up, 180);
-            currentZoom = pickUpRange;
+            HeldObj.transform.RotateAround(holdPos.position, Vector3.up, -90f);
+                currentZoom = minZoomRange;
             holdPos.transform.localPosition = Vector3.forward * currentZoom;
 
             //make sure object doesnt collide with player, it can cause weird bugs
             Physics.IgnoreCollision(HeldObj.GetComponent<Collider>(), _player.GetComponent<Collider>(), true);
+
+            _playerUI.AddActionKey("E", "Drop");
+            _playerUI.AddActionKey("R", "Toggle Rotation");
+
+            _showingPickupHint = false;
+            _showingDropHint = true;
         }
     }
     void DropObject()
     {
         heldObjRb.isKinematic = false;
         HeldObj.transform.parent = null; //unparent object
-        HeldObj.layer = 0; //object assigned back to default layer
+        SetLayerRecursively(HeldObj, 0); //object assigned back to default layer
         HeldObj.transform.position = originalPos;
         heldObjRb.transform.localEulerAngles = originalRot;
 
@@ -165,7 +176,20 @@ public class InspectController : MonoBehaviour
         //re-enable collision with player
         Physics.IgnoreCollision(HeldObj.GetComponent<Collider>(), _player.GetComponent<Collider>(), false);
 
+        _playerUI.DeleteActionKey("E", "Drop");
+        _showingDropHint = false;
+
         HeldObj = null; //undefine game object
+        _playerUI.DeleteActionKey("R", "Toggle Rotation");
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, layer);
+        }
     }
 
     void LockObject()
@@ -209,6 +233,57 @@ public class InspectController : MonoBehaviour
     void ZoomObject()
     {
         currentZoom -= _player.Input.ZoomInputVector.y * zoomSensitivity;
+    }
+
+    private void UpdateInteractHint()
+    {
+        bool showPickup = false;
+
+        // Sedang memegang → tampil Drop
+        if (HeldObj != null)
+        {
+            if (!_showingDropHint)
+            {
+                _playerUI.AddActionKey("E", "Drop");
+
+                _showingDropHint = true;
+                _showingPickupHint = false;
+            }
+
+            return;
+        }
+
+        // Raycast cek pickup
+        if (Physics.Raycast(
+            _player.playerCamera.position,
+            _player.playerCamera.forward,
+            out RaycastHit hit,
+            pickUpRange))
+        {
+            if (hit.transform.CompareTag("canPickUp"))
+            {
+                showPickup = true;
+            }
+        }
+
+        if (showPickup)
+        {
+            if (!_showingPickupHint)
+            {
+                _playerUI.AddActionKey("E", "Pick Up");
+
+                _showingPickupHint = true;
+                _showingDropHint = false;
+            }
+        }
+        else
+        {
+            if (_showingPickupHint)
+            {
+                _playerUI.DeleteActionKey("E", "Pick Up");
+                _showingPickupHint = false;
+            }
+        }
     }
 
 }

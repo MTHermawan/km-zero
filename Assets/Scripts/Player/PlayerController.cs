@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerUIController PlayerUI => PlayerUIController.Instance;
     public PlayerInputController Input { get; private set; }
+    public InspectController InspectController { get; private set; }
 
     [Header("Movement Settings")]
     public float walkSpeed = 5f;
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Input = GetComponent<PlayerInputController>();
+        InspectController = GetComponent<InspectController>();
         playerCamera = Camera.main.transform;
         cinemachineBrain ??= playerCamera?.GetComponent<CinemachineBrain>();
         // cinemachineFPCamera ??= playerCamera?.GetComponent<CinemachineBrain>()?.ActiveVirtualCamera;
@@ -74,7 +76,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = controller.isGrounded;
             if (isGrounded && velocity.y < 0) velocity.y = -2f;
 
-            Debug.Log($"Sprint: {isSprintHeld}, Crouch: {isCrouchHeld}, Grounded: {isGrounded}");
+            // Debug.Log($"Sprint: {isSprintHeld}, Crouch: {isCrouchHeld}, Grounded: {isGrounded}");
 
             // 2. SPEED LOGIC (PRIORITY: CROUCH > RUN > WALK)
             float currentSpeed = walkSpeed;

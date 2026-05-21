@@ -17,10 +17,10 @@ TagManager:
   - Interactable
   - HoldLayer
   - MonitorScreen
-  - 
-  - 
-  - 
-  - 
+  - Anomaly
+  - Player
+  - Ground
+  - Barrier
   - 
   - 
   - 

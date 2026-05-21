@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47adb33df302b6468d10857912857ae, type: 3}
+  m_Name: NPCDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDatabase
+  npcs:
+  - {fileID: 11400000, guid: d46c392f22dfa174892a2d7daf131f9d, type: 2}
+  - {fileID: 11400000, guid: e22dacf34ebfb984490b8fd8ee08183f, type: 2}
+  - {fileID: 11400000, guid: bdcadd57e941d2d4ea2337c4855a0f94, type: 2}

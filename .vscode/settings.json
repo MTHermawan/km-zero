@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "TEPEGE.slnx"
+    "dotnet.defaultSolution": "project_km_zero.slnx"
 }

@@ -49,6 +49,8 @@ public class VirtualScreen : GraphicRaycaster
             {
                 // Figure out where the pointer would be in the second camera based on texture position or RenderTexture.
                 Vector3 virtualPos = new Vector3(hit.textureCoord.x, hit.textureCoord.y);
+                
+                if (ScreenCamera == null || ScreenCaster == null) return;
                 virtualPos.x *= ScreenCamera.targetTexture.width;
                 virtualPos.y *= ScreenCamera.targetTexture.height;
 

@@ -9,6 +9,7 @@ public class PortalBarrier : Interactable
     private float defaultZRotation = 3f;
     private float targetZrotation = 0f;
     private bool isOpen = false;
+    public CheckpointManager checkpointManager => CheckpointManager.Instance;
 
     protected override void Start()
     {
@@ -21,7 +22,7 @@ public class PortalBarrier : Interactable
         base.Update();
         pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(0f, 0f, defaultZRotation + targetZrotation), speed * Time.deltaTime);
         stopTrigger?.gameObject.SetActive(pivot.eulerAngles.z < 50f);
-        Debug.Log($"Target Z: {targetZrotation} - Portal Z Rotation: {pivot.eulerAngles.z}");
+        // Debug.Log($"Target Z: {targetZrotation} - Portal Z Rotation: {pivot.eulerAngles.z}");
     }
 
     private void TogglePortal()

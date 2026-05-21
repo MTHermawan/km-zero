@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49e20ddad3c7e2e43b218e3dfb886f8b, type: 3}
+  m_Name: NPC_Ohim
+  m_EditorClassIdentifier: Assembly-CSharp::NPCData
+  fullName: Muhammad Abdurochim
+  portrait: {fileID: 21300000, guid: 55d0d86fb7fc5c548ba7e8b8ec33c113, type: 3}
+  code: 9906891358
+  gender: 0
+  licensePlate: JKA 4441

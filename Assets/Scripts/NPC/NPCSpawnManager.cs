@@ -29,8 +29,8 @@ public class NPCSpawnManager : MonoBehaviour
     {
         if (spawnPoint == null) return;
 
-        GameObject npc = Instantiate(npcData.GetRandomNPCObject(), spawnPoint.transform.position, Quaternion.identity);
-        npcInstances.Add(npc);
+        // GameObject npc = Instantiate(npcData.GetRandomNPCObject(), spawnPoint.transform.position, Quaternion.identity);
+        // npcInstances.Add(npc);
     }
 
     private static NPCSpawnManager s_instance;

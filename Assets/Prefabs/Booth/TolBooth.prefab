@@ -200,6 +200,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 85.49925
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859439717522468115, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -61.2365
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823143942442283183, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823143942442283183, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823143942442283183, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5823143942442283183, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6173607706147878590, guid: ec88ffed07f36ac4eb6fd8a555cce6a5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -585,6 +625,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9be9d8b8ee5ceae449d6a0146b0b1e7f, type: 3}
       propertyPath: m_Name
       value: TolBooth
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9be9d8b8ee5ceae449d6a0146b0b1e7f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

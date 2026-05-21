@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerUIController PlayerUI => PlayerUIController.Instance;
     private Transform _player;
     public Transform player
     {
@@ -49,9 +47,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        InitializeTimeDisplay();
-        TimeManager.Instance.StartTime();
-        TimeManager.Instance.onTimeEnd += PlayerUI.ShowShiftResult;
+        
     }
 
     public int GetMaskLayers(int layerMask)
@@ -80,22 +76,12 @@ public class GameManager : MonoBehaviour
         _runningCoroutines.Remove(id);
     }
 
-    public void InitializeTimeDisplay()
-    {
-        TimeManager.Instance.onDisplayTimeChanged += (hour, minute) =>
-        {
-            int displayHour = hour % 12;
-            if (displayHour == 0) displayHour = 12;
-            string period = hour >= 12 ? "PM" : "AM";
-            PlayerUI.UpdateTimeDisplay($"{displayHour:00}:{minute:00} {period}");
-        };
-    }
-
     public void PauseGame()
     {
         IsPausing = true;
         PlayerController.Instance.DisableMovement(nameof(IsPausing) + GetInstanceID());
         PlayerController.Instance.UnlockCursor();
+        PlayerController.Instance.InspectController.enabled = false;
         Time.timeScale = 0f;
     }
 
@@ -105,6 +91,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         PlayerController.Instance.EnableMovement(nameof(IsPausing) + GetInstanceID());
         PlayerController.Instance.LockCursor();
+        PlayerController.Instance.InspectController.enabled = true;
     }
 
     public void CreditScene()
@@ -119,6 +106,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        TimeManager.Instance.TimeProgress = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

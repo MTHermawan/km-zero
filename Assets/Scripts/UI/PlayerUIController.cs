@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
@@ -39,6 +41,8 @@ public class PlayerUIController : MonoBehaviour
 
     [Header("Shift Result")]
     [SerializeField] private GameObject shiftResultPanel;
+    [SerializeField] private TMP_Text wrongCarText;
+    
 
 
     void Awake()
@@ -50,6 +54,9 @@ public class PlayerUIController : MonoBehaviour
     void Start()
     {
         ClearActionKeys();
+        InitializeTimeDisplay();
+        TimeManager.Instance.StartTime();
+        TimeManager.Instance.onTimeEnd += ShowShiftResult;
     }
 
     public void RefreshUIState()
@@ -185,9 +192,21 @@ public class PlayerUIController : MonoBehaviour
         }
     }
 
+    public void InitializeTimeDisplay()
+    {
+        TimeManager.Instance.onDisplayTimeChanged += (hour, minute) =>
+        {
+            int displayHour = hour % 12;
+            if (displayHour == 0) displayHour = 12;
+            string period = hour >= 12 ? "PM" : "AM";
+            UpdateTimeDisplay($"{displayHour:00}:{minute:00} {period}");
+        };
+    }
+
     public void ShowGameOver()
     {
         gameOverPanel.SetActive(true);
+        PlayerController.Instance.UnlockCursor(); 
     }
 
     public void ShowShiftResult()
@@ -221,17 +240,44 @@ public class PlayerUIController : MonoBehaviour
 
     public void RestartButton()
     {
-        GameManager.RestartLevel();
+        GameManager.ResumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void BackToMainMenu()
     {
-        GameManager.MainMenu();
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitButton()
     {
-        GameManager.QuitGame();
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private IEnumerator FadeAndLoadScene(string sceneName, float fadeDuration)
+    {
+        float elapsedTime = 0f;
+        blackpanel.SetActive(true);
+        Image panelImage = blackpanel.GetComponent<Image>();
+        Color panelColor = panelImage.color;
+        panelColor.a = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            panelColor.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            panelImage.color = panelColor;
+            yield return null;
+        }
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void SetWrongCarText(string currentMistake, string maxMistake)
+    {
+        if (wrongCarText != null)
+        {
+            wrongCarText.SetText($"{currentMistake}/{maxMistake}");
+        }
     }
 
     private static PlayerUIController s_instance;

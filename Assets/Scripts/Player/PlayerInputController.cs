@@ -25,6 +25,7 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
+        if (GameManager.Instance.IsPausing) return;
         LookInputVector = value.Get<Vector2>();
         onLook?.Invoke();
     }
@@ -37,6 +38,7 @@ public class PlayerInputController : MonoBehaviour
     private PlayerUIController playerUI => PlayerUIController.Instance;
     public void OnInteract()
     {
+        if (GameManager.Instance.IsPausing) return;
         onInteract?.Invoke();
         if (TryGetComponent(out Interactor interactable))
         {
@@ -46,17 +48,20 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnExit()
     {
+        if (GameManager.Instance.IsPausing) return;
         onExit?.Invoke();
     }
 
     public void OnZoom(InputValue value)
     {
+        if (GameManager.Instance.IsPausing) return;
         ZoomInputVector = value.Get<Vector2>();
         onZoom?.Invoke();
     }
 
     public void OnRotate()
     {
+        if (GameManager.Instance.IsPausing) return;
         onRotate?.Invoke();
     }
 
