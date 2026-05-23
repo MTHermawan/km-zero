@@ -2728,7 +2728,7 @@ Transform:
   m_GameObject: {fileID: 397815715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.76, y: 3.2, z: -49}
+  m_LocalPosition: {x: 14.76, y: 3.2, z: -16.23}
   m_LocalScale: {x: 8, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13430,8 +13430,8 @@ MonoBehaviour:
   - {fileID: 2051086427060357942, guid: d18bf8a84d248f346bfbb8c5754eaacd, type: 3}
   spawnPoint: {fileID: 180114671}
   checkpointManager: {fileID: 169423453}
-  intervalMin: 20
-  intervalMax: 40
+  intervalMin: 3
+  intervalMax: 7
   spawnOnStart: 1
   anomalyChance: 0.5
   waitForCheckpointClear: 0
